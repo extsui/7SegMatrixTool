@@ -32,13 +32,13 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.buttonStartConvert = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.buttonSelectOutputFile = new System.Windows.Forms.Button();
             this.numericUpDownConvertNum = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonSelectOutputFolder = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxOutputFile = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonSelectInputFolder = new System.Windows.Forms.Button();
             this.textBoxInputFolder = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -56,6 +56,11 @@
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.pictureBoxInput = new System.Windows.Forms.PictureBox();
             this.pictureBoxOutput = new System.Windows.Forms.PictureBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.folderBrowserDialogSelectInput = new System.Windows.Forms.FolderBrowserDialog();
+            this.folderBrowserDialogSelectOutput = new System.Windows.Forms.FolderBrowserDialog();
+            this.saveFileDialogSelectOutput = new System.Windows.Forms.SaveFileDialog();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).BeginInit();
@@ -69,13 +74,13 @@
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.buttonStartConvert);
-            this.groupBox2.Controls.Add(this.button4);
+            this.groupBox2.Controls.Add(this.buttonSelectOutputFile);
             this.groupBox2.Controls.Add(this.numericUpDownConvertNum);
             this.groupBox2.Controls.Add(this.label10);
-            this.groupBox2.Controls.Add(this.button5);
+            this.groupBox2.Controls.Add(this.buttonSelectOutputFolder);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.textBoxOutputFile);
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.buttonSelectInputFolder);
             this.groupBox2.Controls.Add(this.textBoxInputFolder);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label4);
@@ -119,15 +124,17 @@
             this.buttonStartConvert.TabIndex = 9;
             this.buttonStartConvert.Text = "変換開始";
             this.buttonStartConvert.UseVisualStyleBackColor = true;
+            this.buttonStartConvert.Click += new System.EventHandler(this.buttonStartConvert_Click);
             // 
-            // button4
+            // buttonSelectOutputFile
             // 
-            this.button4.Location = new System.Drawing.Point(486, 68);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "選択";
-            this.button4.UseVisualStyleBackColor = true;
+            this.buttonSelectOutputFile.Location = new System.Drawing.Point(486, 68);
+            this.buttonSelectOutputFile.Name = "buttonSelectOutputFile";
+            this.buttonSelectOutputFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectOutputFile.TabIndex = 7;
+            this.buttonSelectOutputFile.Text = "選択";
+            this.buttonSelectOutputFile.UseVisualStyleBackColor = true;
+            this.buttonSelectOutputFile.Click += new System.EventHandler(this.buttonSelectOutputFile_Click);
             // 
             // numericUpDownConvertNum
             // 
@@ -160,14 +167,15 @@
             this.label10.TabIndex = 9;
             this.label10.Text = "変換枚数";
             // 
-            // button5
+            // buttonSelectOutputFolder
             // 
-            this.button5.Location = new System.Drawing.Point(486, 42);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "選択";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonSelectOutputFolder.Location = new System.Drawing.Point(486, 42);
+            this.buttonSelectOutputFolder.Name = "buttonSelectOutputFolder";
+            this.buttonSelectOutputFolder.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectOutputFolder.TabIndex = 4;
+            this.buttonSelectOutputFolder.Text = "選択";
+            this.buttonSelectOutputFolder.UseVisualStyleBackColor = true;
+            this.buttonSelectOutputFolder.Click += new System.EventHandler(this.buttonSelectOutputFolder_Click);
             // 
             // label8
             // 
@@ -185,14 +193,15 @@
             this.textBoxOutputFile.Size = new System.Drawing.Size(400, 19);
             this.textBoxOutputFile.TabIndex = 6;
             // 
-            // button1
+            // buttonSelectInputFolder
             // 
-            this.button1.Location = new System.Drawing.Point(486, 16);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "選択";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonSelectInputFolder.Location = new System.Drawing.Point(486, 16);
+            this.buttonSelectInputFolder.Name = "buttonSelectInputFolder";
+            this.buttonSelectInputFolder.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelectInputFolder.TabIndex = 1;
+            this.buttonSelectInputFolder.Text = "選択";
+            this.buttonSelectInputFolder.UseVisualStyleBackColor = true;
+            this.buttonSelectInputFolder.Click += new System.EventHandler(this.buttonSelectInputFolder_Click);
             // 
             // textBoxInputFolder
             // 
@@ -273,6 +282,7 @@
             this.trackBarThreshold.TickFrequency = 10;
             this.trackBarThreshold.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.trackBarThreshold.Value = 50;
+            this.trackBarThreshold.Scroll += new System.EventHandler(this.trackBarThreshold_Scroll);
             // 
             // groupBox1
             // 
@@ -330,6 +340,7 @@
             this.buttonSaveFile.TabIndex = 2;
             this.buttonSaveFile.Text = "保存";
             this.buttonSaveFile.UseVisualStyleBackColor = true;
+            this.buttonSaveFile.Click += new System.EventHandler(this.buttonSaveFile_Click);
             // 
             // buttonOpenFile
             // 
@@ -339,6 +350,7 @@
             this.buttonOpenFile.TabIndex = 0;
             this.buttonOpenFile.Text = "開く";
             this.buttonOpenFile.UseVisualStyleBackColor = true;
+            this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
             // 
             // pictureBoxInput
             // 
@@ -361,6 +373,19 @@
             this.pictureBoxOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBoxOutput.TabIndex = 1;
             this.pictureBoxOutput.TabStop = false;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "ビットマップファイル|*.bmp";
+            this.openFileDialog.InitialDirectory = "C:\\";
+            // 
+            // saveFileDialog
+            // 
+            this.saveFileDialog.Filter = "ビットマップファイル|*.bmp";
+            // 
+            // saveFileDialogSelectOutput
+            // 
+            this.saveFileDialogSelectOutput.Filter = "7セグメントマトリクス専用形式|*.7sm";
             // 
             // ToolForm
             // 
@@ -407,14 +432,19 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBoxOutputFile;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonSelectInputFolder;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBoxOutput;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button buttonSelectOutputFolder;
+        private System.Windows.Forms.Button buttonSelectOutputFile;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogSelectInput;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogSelectOutput;
+        private System.Windows.Forms.SaveFileDialog saveFileDialogSelectOutput;
     }
 }
 
