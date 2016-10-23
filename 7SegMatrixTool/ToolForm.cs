@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using OpenCvSharp;
 
 namespace _7SegMatrixTool
 {
@@ -20,7 +21,11 @@ namespace _7SegMatrixTool
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 // TODO:
-                MessageBox.Show("開く");
+                IplImage mImage = new IplImage(openFileDialog.FileName);
+                IplImage pictureImage = new IplImage(mImage.GetSize(), BitDepth.U8, 3);
+                pictureImage.SetROI(0, 0, pictureBoxIplOutput.Width, pictureBoxIplOutput.Height);
+                mImage.Resize(pictureImage);
+                pictureBoxIplInput.ImageIpl = pictureImage;
             }
         }
 

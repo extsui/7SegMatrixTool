@@ -54,19 +54,19 @@
             this.label3 = new System.Windows.Forms.Label();
             this.buttonSaveFile = new System.Windows.Forms.Button();
             this.buttonOpenFile = new System.Windows.Forms.Button();
-            this.pictureBoxInput = new System.Windows.Forms.PictureBox();
-            this.pictureBoxOutput = new System.Windows.Forms.PictureBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.folderBrowserDialogSelectInput = new System.Windows.Forms.FolderBrowserDialog();
             this.folderBrowserDialogSelectOutput = new System.Windows.Forms.FolderBrowserDialog();
             this.saveFileDialogSelectOutput = new System.Windows.Forms.SaveFileDialog();
+            this.pictureBoxIplInput = new OpenCvSharp.UserInterface.PictureBoxIpl();
+            this.pictureBoxIplOutput = new OpenCvSharp.UserInterface.PictureBoxIpl();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInput)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOutput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplOutput)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -288,13 +288,13 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.pictureBoxIplOutput);
+            this.groupBox1.Controls.Add(this.pictureBoxIplInput);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.buttonSaveFile);
             this.groupBox1.Controls.Add(this.buttonOpenFile);
-            this.groupBox1.Controls.Add(this.pictureBoxInput);
-            this.groupBox1.Controls.Add(this.pictureBoxOutput);
             this.groupBox1.Controls.Add(this.trackBarThreshold);
             this.groupBox1.Location = new System.Drawing.Point(12, 6);
             this.groupBox1.Name = "groupBox1";
@@ -352,28 +352,6 @@
             this.buttonOpenFile.UseVisualStyleBackColor = true;
             this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
             // 
-            // pictureBoxInput
-            // 
-            this.pictureBoxInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxInput.InitialImage = null;
-            this.pictureBoxInput.Location = new System.Drawing.Point(14, 31);
-            this.pictureBoxInput.Name = "pictureBoxInput";
-            this.pictureBoxInput.Size = new System.Drawing.Size(320, 240);
-            this.pictureBoxInput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxInput.TabIndex = 0;
-            this.pictureBoxInput.TabStop = false;
-            // 
-            // pictureBoxOutput
-            // 
-            this.pictureBoxOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxOutput.InitialImage = null;
-            this.pictureBoxOutput.Location = new System.Drawing.Point(391, 31);
-            this.pictureBoxOutput.Name = "pictureBoxOutput";
-            this.pictureBoxOutput.Size = new System.Drawing.Size(320, 240);
-            this.pictureBoxOutput.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBoxOutput.TabIndex = 1;
-            this.pictureBoxOutput.TabStop = false;
-            // 
             // openFileDialog
             // 
             this.openFileDialog.Filter = "ビットマップファイル|*.bmp";
@@ -386,6 +364,24 @@
             // saveFileDialogSelectOutput
             // 
             this.saveFileDialogSelectOutput.Filter = "7セグメントマトリクス専用形式|*.7sm";
+            // 
+            // pictureBoxIplInput
+            // 
+            this.pictureBoxIplInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxIplInput.Location = new System.Drawing.Point(14, 31);
+            this.pictureBoxIplInput.Name = "pictureBoxIplInput";
+            this.pictureBoxIplInput.Size = new System.Drawing.Size(320, 240);
+            this.pictureBoxIplInput.TabIndex = 13;
+            this.pictureBoxIplInput.TabStop = false;
+            // 
+            // pictureBoxIplOutput
+            // 
+            this.pictureBoxIplOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxIplOutput.Location = new System.Drawing.Point(390, 31);
+            this.pictureBoxIplOutput.Name = "pictureBoxIplOutput";
+            this.pictureBoxIplOutput.Size = new System.Drawing.Size(320, 240);
+            this.pictureBoxIplOutput.TabIndex = 14;
+            this.pictureBoxIplOutput.TabStop = false;
             // 
             // ToolForm
             // 
@@ -404,15 +400,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxInput)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxOutput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplOutput)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBoxInput;
         private System.Windows.Forms.TrackBar trackBarThreshold;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonSaveFile;
@@ -435,7 +430,6 @@
         private System.Windows.Forms.Button buttonSelectInputFolder;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBoxOutput;
         private System.Windows.Forms.Button buttonSelectOutputFolder;
         private System.Windows.Forms.Button buttonSelectOutputFile;
         private System.Windows.Forms.Label label12;
@@ -445,6 +439,8 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogSelectInput;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialogSelectOutput;
         private System.Windows.Forms.SaveFileDialog saveFileDialogSelectOutput;
+        private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplOutput;
+        private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplInput;
     }
 }
 
