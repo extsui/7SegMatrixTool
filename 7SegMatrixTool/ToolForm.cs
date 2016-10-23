@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
-using OpenCvSharp;
 
 namespace _7SegMatrixTool
 {
     public partial class ToolForm : Form
     {
+        private _7SegMatrix m7SegMatrix = null;
+
         public ToolForm()
         {
             InitializeComponent();
@@ -20,12 +21,10 @@ namespace _7SegMatrixTool
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                // TODO:
-                IplImage mImage = new IplImage(openFileDialog.FileName);
-                IplImage pictureImage = new IplImage(mImage.GetSize(), BitDepth.U8, 3);
-                pictureImage.SetROI(0, 0, pictureBoxIplOutput.Width, pictureBoxIplOutput.Height);
-                mImage.Resize(pictureImage);
-                pictureBoxIplInput.ImageIpl = pictureImage;
+                m7SegMatrix = new _7SegMatrix(openFileDialog.FileName);
+                m7SegMatrix.drawInputPicture(pictureBoxIplInput);
+                m7SegMatrix.setThreshold(trackBarThreshold.Value);
+                m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
             }
         }
 
@@ -36,8 +35,8 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void trackBarThreshold_Scroll(object sender, EventArgs e)
         {
-            // TODO:
-            MessageBox.Show("変更");
+            m7SegMatrix.setThreshold(trackBarThreshold.Value);
+            m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
         }
 
         /// <summary>
