@@ -10,6 +10,11 @@ namespace _7SegMatrixTool
 {
     class _7SegMatrix
     {
+        private const int X_7SEG_NUM = 16;  // 7セグマトリクスのX方向の個数
+        private const int Y_7SEG_NUM = 8;   // 7セグマトリクスのY方向の個数
+        private const int X_7SEG_GAP = 1;   // 7セグ間のX方向の間隔((39 + <1>) * 16 --> 640)
+        private const int Y_7SEG_GAP = 8;   // 7セグ間のY方向の間隔((52 + <8>) * 8  --> 480)
+
         IplImage mImageFull = null; // 入力画像(フルカラー)
         IplImage mImageGray = null; // 入力画像(グレースケール)
         IplImage mImageBin  = null; // 出力画像(二値)
@@ -80,11 +85,8 @@ namespace _7SegMatrixTool
         /// </summary>
         private void convertGrayToBin()
         {
-            using (IplImage binaryOtsu = mImageGray.Clone())
-            {
-                Cv.Threshold(mImageGray, binaryOtsu, 0, 255, ThresholdType.Otsu);
-                mImageBin = binaryOtsu.Clone();
-            }
+            mImageBin = mImageGray.Clone();
+            Cv.Threshold(mImageGray, mImageBin, 0, 255, ThresholdType.Otsu);
         }
 
         /// <summary>
@@ -96,11 +98,40 @@ namespace _7SegMatrixTool
         {
             mImage7Seg = mImageBin.Clone();
             mImage7Seg.Zero();
+            match7SegMatrix(mImageBin, mImage7Seg, threshold);
+        }
 
-            // TODO: 応急処置
-            SegmentEditor.thresholdRate = (double)threshold / 100;
+        /// <summary>
+        /// 7セグマトリクスへのマッチング
+        /// </summary>
+        /// <param name="src">入力画像</param>
+        /// <param name="dest">出力画像</param>
+        /// <param name="threshold">閾値(0-100)</param>
+        private void match7SegMatrix(IplImage src, IplImage dest, int threshold)
+        {
+            _7SegImage _7Seg = new _7SegImage();
 
-            _7SegImage._7SegmentMatching(mImageBin, mImage7Seg);
+            // 以下のfor文を並列化
+            // for (int y = 0; y < Y_7SEG_NUM; y++)
+            Parallel.For(0, Y_7SEG_NUM, y =>
+            {
+                int yGap = y * Y_7SEG_GAP;
+                for (int x = 0; x < X_7SEG_NUM; x++)
+                {
+                    int xGap = x * X_7SEG_GAP;
+                    CvSize _7SEG_SIZE = _7Seg.getSize();
+
+                    byte pattern = _7Seg.match(mImageBin,
+                        x * _7SEG_SIZE.Width + xGap,
+                        y * _7SEG_SIZE.Height + yGap,
+                        threshold);
+
+                    _7Seg.write(mImage7Seg,
+                        x * _7SEG_SIZE.Width + xGap,
+                        y * _7SEG_SIZE.Height + yGap,
+                        pattern);
+                }
+            });
         }
     }
 }

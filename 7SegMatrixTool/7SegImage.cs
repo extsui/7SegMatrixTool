@@ -5,95 +5,46 @@ namespace _7SegMatrixTool
 {
     class _7SegImage
     {
-        private const int SEGMENT_X_SPAN = 1; /* (39 + <1>) * 16 --> 640 */
-        private const int SEGMENT_Y_SPAN = 8; /* (52 + <8>) * 8  --> 480 */
+        private const int SEGMENT_NUM = 8;  // 7セグメントのセグメント数
+        private IplImage[] segment = null;  // 各セグメントのマスクパターン画像
 
-        public static void _7SegmentMatching(IplImage src, IplImage dest)
+        public _7SegImage()
         {
-            SegmentEditor se = new SegmentEditor();
-            for (int y = 0; y < 8; y++)
-            {
-                int yspan = y * SEGMENT_Y_SPAN;
-                for (int x = 0; x < 16; x++)
-                {
-                    int xspan = x * SEGMENT_X_SPAN;
-                    byte pattern = se.Match7Segment(src, x * 39 + xspan, y * 52 + yspan);
-                    se.Write7Segment(dest, x * 39 + xspan, y * 52 + yspan, pattern);
-                }
-            }
-        }
-    }
-
-    /*****************************************************************************/
-
-    class SegmentEditor
-    {
-        const int SEGMENT_NUM = 8;
-        IplImage[] segment = new IplImage[SEGMENT_NUM];
-
-        public SegmentEditor()
-        {
+            /*
+             * 0.bmp ... aセグメントに対応
+             * 1.bmp ... bセグメントに対応
+             * ...
+             * 7.bmp ... dotセグメントに対応
+             * (画像は全ては同一サイズ)
+             */
+            segment = new IplImage[SEGMENT_NUM];
             for (int i = 0; i < SEGMENT_NUM; i++)
             {
-                /*
-                 * "../../../x.bmp"を読み込む．
-                 * xは0-7であり，それぞれa-.セグメントに対応．
-                 * 全ての画像は同一サイズとする．
-                 */
                 segment[i] = new IplImage(@"../../../" + i + ".bmp");
             }
         }
 
-        private IplImage Create7SegmentImage(byte pattern)
+        /// <summary>
+        /// マッチングに使用する7セグメント画像のサイズを返す
+        /// </summary>
+        /// <returns>画像サイズ</returns>
+        public CvSize getSize()
         {
-            // segment[0]を原型として使用する
-            IplImage patternImage = segment[0].Clone();
-            patternImage.Zero();
-
-            // segment[a,b,..,.] : bit[0x80,0x40,..,0x01]
-            byte bit = 0x80;
-            for (int i = 0; i < SEGMENT_NUM; i++)
-            {
-                if ((pattern & bit) != 0)
-                {
-                    patternImage.Or(segment[i], patternImage);
-                }
-                bit >>= 1;
-            }
-            return patternImage;
+            return segment[0].GetSize();
         }
-
-        public void Write7Segment(IplImage canvas, int x, int y, byte pattern)
-        {
-            IplImage writeImage = Create7SegmentImage(pattern);
-
-            for (int _y = 0; _y < segment[0].Height; _y++)
-            {
-                for (int _x = 0; _x < segment[0].Width; _x++)
-                {
-                    CvScalar cs = writeImage.Get2D(_y, _x);
-                    canvas.Set2D(y + _y, x + _x, cs);
-                }
-            }
-        }
-
-        /***/
-        public static double thresholdRate;
-        /***/
 
         /// <summary>
-        /// srcで指定された画像の座標(x, y)に対して，7セグメントマッチングを行う．
-        /// マッチング結果はdestで指定された画像に書き込む．
-        /// TODO: ビットパターンを返すというのもあり．
+        /// srcで指定されたマッチング対象の画像の座標(x, y)に対して、
+        /// 7セグメントのマッチングを行い、マッチング結果を7セグの
+        /// ビットパターンとして返す。
         /// </summary>
-        /// <param name="canvas"></param>
-        /// <param name="origin"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public byte Match7Segment(IplImage src, int x, int y)
+        /// <param name="src">マッチング対象の画像</param>
+        /// <param name="x">x座標始点</param>
+        /// <param name="y">y座標始点</param>
+        /// <param name="threshold">マッチングに使用する閾値(0-100)</param>
+        /// <returns>7セグメントのビットパターン</returns>
+        public byte match(IplImage src, int x, int y, int threshold)
         {
-            //const double thresholdRate = 0.50;
-
             byte pattern = 0x00;
             for (int i = 0; i < SEGMENT_NUM; i++)
             {
@@ -133,12 +84,58 @@ namespace _7SegMatrixTool
                 }
                 // 白ピクセル部分全体に占める対象画像の白ピクセル数の割合を求める．
                 // ある一定以上の割合であると当該セグメントを書き込む．
-                if ((double)samePixelNum / totalPixelNum >= thresholdRate)
+                if (((double)samePixelNum / totalPixelNum) * 100 >= threshold)
                 {
                     pattern |= (byte)(0x80 >> i);
                 }
             }
             return pattern;
+        }
+
+        /// <summary>
+        /// destで指定された画像の座標(x, y)に対して、patternで
+        /// 指定された7セグメントのビットパターンを書き込む。
+        /// </summary>
+        /// <param name="dest">パターンを書き込む画像</param>
+        /// <param name="x">x座標始点</param>
+        /// <param name="y">y座標始点</param>
+        /// <param name="pattern">7セグメントのビットパターン</param>
+        public void write(IplImage dest, int x, int y, byte pattern)
+        {
+            IplImage writeImage = create(pattern);
+
+            for (int _y = 0; _y < segment[0].Height; _y++)
+            {
+                for (int _x = 0; _x < segment[0].Width; _x++)
+                {
+                    CvScalar cs = writeImage.Get2D(_y, _x);
+                    dest.Set2D(y + _y, x + _x, cs);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 指定された7セグメントのビットパターン画像を作成する
+        /// </summary>
+        /// <param name="pattern">7セグメントのビットパターン</param>
+        /// <returns>7セグメントのビットパターン画像</returns>
+        private IplImage create(byte pattern)
+        {
+            // segment[0]を原型として使用する
+            IplImage patternImage = segment[0].Clone();
+            patternImage.Zero();
+
+            // segment[a,b,..,.] : bit[0x80,0x40,..,0x01]
+            byte bit = 0x80;
+            for (int i = 0; i < SEGMENT_NUM; i++)
+            {
+                if ((pattern & bit) != 0)
+                {
+                    patternImage.Or(segment[i], patternImage);
+                }
+                bit >>= 1;
+            }
+            return patternImage;
         }
     }
 }

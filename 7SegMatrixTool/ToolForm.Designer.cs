@@ -1,4 +1,6 @@
-﻿namespace _7SegMatrixTool
+﻿using OpenCvSharp;
+
+namespace _7SegMatrixTool
 {
     partial class ToolForm
     {
