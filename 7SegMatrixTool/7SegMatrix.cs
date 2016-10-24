@@ -15,12 +15,11 @@ namespace _7SegMatrixTool
         IplImage mImageBin  = null; // 出力画像(二値)
         IplImage mImage7Seg = null; // 出力画像(7セグ)
 
-        private int mThreshold;     // 二値画像⇒7セグ変換時の閾値
-
         public _7SegMatrix(string fileName)
         {
             mImageFull = new IplImage(fileName);
-            fullToGray();
+            convertFullToGray();
+            convertGrayToBin();
         }
 
         /// <summary>
@@ -38,20 +37,16 @@ namespace _7SegMatrixTool
         /// <param name="pb">描画先のPictureBox</param>
         public void drawOutputPicture(OpenCvSharp.UserInterface.PictureBoxIpl pb)
         {
-            // TODO:
-            // drawPicture(pb, mImage7Seg);
-
-            grayToBin();
-            drawPicture(pb, mImageGray);
+            drawPicture(pb, mImage7Seg);
         }
 
         /// <summary>
-        /// グレースケール⇒7セグ変換時の閾値を設定する
+        /// 指定された閾値でグレースケール⇒7セグ変換を行う
         /// </summary>
         /// <param name="threshold">閾値(0-100)</param>
-        public void setThreshold(int threshold)
+        public void convert(int threshold)
         {
-            mThreshold = threshold;
+            convertBinTo7Seg(threshold);
         }
 
         /// <summary>
@@ -73,7 +68,7 @@ namespace _7SegMatrixTool
         /// フルカラー画像(24bit)をグレースケール画像(8bit)に変換する
         /// mImageFull --> mImageGray
         /// </summary>
-        private void fullToGray()
+        private void convertFullToGray()
         {
             mImageGray = new IplImage(mImageFull.GetSize(), BitDepth.U8, 1);
             mImageFull.CvtColor(mImageGray, ColorConversion.BgrToGray);
@@ -83,12 +78,12 @@ namespace _7SegMatrixTool
         /// グレースケール画像(8bit)を二値画像(8bit)に変換する
         /// mImageGray --> mImageBin
         /// </summary>
-        private void grayToBin()
+        private void convertGrayToBin()
         {
             using (IplImage binaryOtsu = mImageGray.Clone())
             {
                 Cv.Threshold(mImageGray, binaryOtsu, 0, 255, ThresholdType.Otsu);
-                mImageGray = binaryOtsu.Clone();
+                mImageBin = binaryOtsu.Clone();
             }
         }
 
@@ -96,9 +91,16 @@ namespace _7SegMatrixTool
         /// 二値画像(8bit)を7セグ画像(8bit)に変換する
         /// mImageGray --> mImageBin
         /// </summary>
-        private void BinTo7Seg()
+        /// <param name="threshold">閾値(0-100)</param>
+        private void convertBinTo7Seg(int threshold)
         {
-            // TODO:
+            mImage7Seg = mImageBin.Clone();
+            mImage7Seg.Zero();
+
+            // TODO: 応急処置
+            SegmentEditor.thresholdRate = (double)threshold / 100;
+
+            _7SegImage._7SegmentMatching(mImageBin, mImage7Seg);
         }
     }
 }

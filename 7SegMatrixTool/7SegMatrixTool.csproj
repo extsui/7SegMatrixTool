@@ -62,6 +62,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="7SegImage.cs" />
     <Compile Include="7SegMatrix.cs" />
     <Compile Include="ToolForm.cs">
       <SubType>Form</SubType>

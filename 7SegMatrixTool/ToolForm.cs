@@ -23,7 +23,7 @@ namespace _7SegMatrixTool
             {
                 m7SegMatrix = new _7SegMatrix(openFileDialog.FileName);
                 m7SegMatrix.drawInputPicture(pictureBoxIplInput);
-                m7SegMatrix.setThreshold(trackBarThreshold.Value);
+                m7SegMatrix.convert(trackBarThreshold.Value);
                 m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
             }
         }
@@ -35,7 +35,7 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void trackBarThreshold_Scroll(object sender, EventArgs e)
         {
-            m7SegMatrix.setThreshold(trackBarThreshold.Value);
+            m7SegMatrix.convert(trackBarThreshold.Value);
             m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
         }
 
