@@ -51,6 +51,9 @@ namespace _7SegMatrixTool
             this.textBoxOutputPrefix = new System.Windows.Forms.TextBox();
             this.trackBarThreshold = new System.Windows.Forms.TrackBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.labelThreshold = new System.Windows.Forms.Label();
+            this.pictureBoxIplOutput = new OpenCvSharp.UserInterface.PictureBoxIpl();
+            this.pictureBoxIplInput = new OpenCvSharp.UserInterface.PictureBoxIpl();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -61,14 +64,12 @@ namespace _7SegMatrixTool
             this.folderBrowserDialogSelectInput = new System.Windows.Forms.FolderBrowserDialog();
             this.folderBrowserDialogSelectOutput = new System.Windows.Forms.FolderBrowserDialog();
             this.saveFileDialogSelectOutput = new System.Windows.Forms.SaveFileDialog();
-            this.pictureBoxIplInput = new OpenCvSharp.UserInterface.PictureBoxIpl();
-            this.pictureBoxIplOutput = new OpenCvSharp.UserInterface.PictureBoxIpl();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplOutput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox2
@@ -278,7 +279,7 @@ namespace _7SegMatrixTool
             this.trackBarThreshold.Maximum = 100;
             this.trackBarThreshold.Name = "trackBarThreshold";
             this.trackBarThreshold.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.trackBarThreshold.Size = new System.Drawing.Size(45, 225);
+            this.trackBarThreshold.Size = new System.Drawing.Size(45, 211);
             this.trackBarThreshold.SmallChange = 10;
             this.trackBarThreshold.TabIndex = 1;
             this.trackBarThreshold.TickFrequency = 10;
@@ -290,6 +291,7 @@ namespace _7SegMatrixTool
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.labelThreshold);
             this.groupBox1.Controls.Add(this.pictureBoxIplOutput);
             this.groupBox1.Controls.Add(this.pictureBoxIplInput);
             this.groupBox1.Controls.Add(this.label2);
@@ -304,6 +306,33 @@ namespace _7SegMatrixTool
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "パラメータ調整";
+            // 
+            // labelThreshold
+            // 
+            this.labelThreshold.Location = new System.Drawing.Point(349, 257);
+            this.labelThreshold.Name = "labelThreshold";
+            this.labelThreshold.Size = new System.Drawing.Size(23, 12);
+            this.labelThreshold.TabIndex = 15;
+            this.labelThreshold.Text = "50";
+            this.labelThreshold.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // pictureBoxIplOutput
+            // 
+            this.pictureBoxIplOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxIplOutput.Location = new System.Drawing.Point(390, 31);
+            this.pictureBoxIplOutput.Name = "pictureBoxIplOutput";
+            this.pictureBoxIplOutput.Size = new System.Drawing.Size(320, 240);
+            this.pictureBoxIplOutput.TabIndex = 14;
+            this.pictureBoxIplOutput.TabStop = false;
+            // 
+            // pictureBoxIplInput
+            // 
+            this.pictureBoxIplInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBoxIplInput.Location = new System.Drawing.Point(14, 31);
+            this.pictureBoxIplInput.Name = "pictureBoxIplInput";
+            this.pictureBoxIplInput.Size = new System.Drawing.Size(320, 240);
+            this.pictureBoxIplInput.TabIndex = 13;
+            this.pictureBoxIplInput.TabStop = false;
             // 
             // label2
             // 
@@ -367,24 +396,6 @@ namespace _7SegMatrixTool
             // 
             this.saveFileDialogSelectOutput.Filter = "7セグメントマトリクス専用形式|*.7sm";
             // 
-            // pictureBoxIplInput
-            // 
-            this.pictureBoxIplInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxIplInput.Location = new System.Drawing.Point(14, 31);
-            this.pictureBoxIplInput.Name = "pictureBoxIplInput";
-            this.pictureBoxIplInput.Size = new System.Drawing.Size(320, 240);
-            this.pictureBoxIplInput.TabIndex = 13;
-            this.pictureBoxIplInput.TabStop = false;
-            // 
-            // pictureBoxIplOutput
-            // 
-            this.pictureBoxIplOutput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBoxIplOutput.Location = new System.Drawing.Point(390, 31);
-            this.pictureBoxIplOutput.Name = "pictureBoxIplOutput";
-            this.pictureBoxIplOutput.Size = new System.Drawing.Size(320, 240);
-            this.pictureBoxIplOutput.TabIndex = 14;
-            this.pictureBoxIplOutput.TabStop = false;
-            // 
             // ToolForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -402,8 +413,8 @@ namespace _7SegMatrixTool
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplOutput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplInput)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -443,6 +454,7 @@ namespace _7SegMatrixTool
         private System.Windows.Forms.SaveFileDialog saveFileDialogSelectOutput;
         private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplOutput;
         private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplInput;
+        private System.Windows.Forms.Label labelThreshold;
     }
 }
 

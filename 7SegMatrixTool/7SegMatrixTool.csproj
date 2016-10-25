@@ -64,6 +64,12 @@
   <ItemGroup>
     <Compile Include="7SegImage.cs" />
     <Compile Include="7SegMatrix.cs" />
+    <Compile Include="ConvertionProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConvertionProgressForm.Designer.cs">
+      <DependentUpon>ConvertionProgressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ToolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConvertionProgressForm.resx">
+      <DependentUpon>ConvertionProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ToolForm.resx">
       <DependentUpon>ToolForm.cs</DependentUpon>
     </EmbeddedResource>

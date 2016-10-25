@@ -35,6 +35,7 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void trackBarThreshold_Scroll(object sender, EventArgs e)
         {
+            labelThreshold.Text = trackBarThreshold.Value.ToString("D");
             m7SegMatrix.convert(trackBarThreshold.Value);
             m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
         }
@@ -99,8 +100,9 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void buttonStartConvert_Click(object sender, EventArgs e)
         {
-            // TODO:
-            MessageBox.Show("変換開始");
+            Form f = new ConvertionProgressForm();
+            f.ShowDialog();
+            f.Dispose();
         }
     }
 }
