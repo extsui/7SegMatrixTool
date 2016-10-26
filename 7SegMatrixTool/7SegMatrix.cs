@@ -1,9 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using OpenCvSharp;
 
 namespace _7SegMatrixTool
@@ -67,6 +62,11 @@ namespace _7SegMatrixTool
                 img.Resize(pictureImage);
                 pb.ImageIpl = pictureImage;
             }
+        }
+
+        public void save(string fileName)
+        {
+            mImage7Seg.SaveImage(fileName);
         }
 
         /// <summary>

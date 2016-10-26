@@ -274,6 +274,7 @@ namespace _7SegMatrixTool
             // 
             // trackBarThreshold
             // 
+            this.trackBarThreshold.Enabled = false;
             this.trackBarThreshold.LargeChange = 10;
             this.trackBarThreshold.Location = new System.Drawing.Point(340, 46);
             this.trackBarThreshold.Maximum = 100;
@@ -365,6 +366,7 @@ namespace _7SegMatrixTool
             // 
             // buttonSaveFile
             // 
+            this.buttonSaveFile.Enabled = false;
             this.buttonSaveFile.Location = new System.Drawing.Point(636, 277);
             this.buttonSaveFile.Name = "buttonSaveFile";
             this.buttonSaveFile.Size = new System.Drawing.Size(75, 23);
@@ -394,7 +396,9 @@ namespace _7SegMatrixTool
             // 
             // saveFileDialogSelectOutput
             // 
-            this.saveFileDialogSelectOutput.Filter = "7セグメントマトリクス専用形式|*.7sm";
+            this.saveFileDialogSelectOutput.DefaultExt = "7sm";
+            this.saveFileDialogSelectOutput.Filter = "すべてのファイル|*.*";
+            this.saveFileDialogSelectOutput.SupportMultiDottedExtensions = true;
             // 
             // ToolForm
             // 
