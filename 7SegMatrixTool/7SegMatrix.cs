@@ -9,11 +9,14 @@ namespace _7SegMatrixTool
         private const int Y_7SEG_NUM = 8;   // 7セグマトリクスのY方向の個数
         private const int X_7SEG_GAP = 1;   // 7セグ間のX方向の間隔((39 + <1>) * 16 --> 640)
         private const int Y_7SEG_GAP = 8;   // 7セグ間のY方向の間隔((52 + <8>) * 8  --> 480)
+        private const int _7SEG_NUM_IN_MATRIX = X_7SEG_NUM * Y_7SEG_NUM;    // 7セグマトリクスの7セグの個数
 
         IplImage mImageFull = null; // 入力画像(フルカラー)
         IplImage mImageGray = null; // 入力画像(グレースケール)
         IplImage mImageBin  = null; // 出力画像(二値)
         IplImage mImage7Seg = null; // 出力画像(7セグ)
+
+        byte[] m7SegPattern = null;    // 7セグパターン配列
 
         public _7SegMatrix(string fileName)
         {
@@ -50,6 +53,24 @@ namespace _7SegMatrixTool
         }
 
         /// <summary>
+        /// 7セグパターンを取得する
+        /// </summary>
+        /// <returns></returns>
+        public byte[] get7SegPattern()
+        {
+            return m7SegPattern;
+        }
+
+        /// <summary>
+        /// 7セグ画像をファイルに保存する
+        /// </summary>
+        /// <param name="fileName"></param>
+        public void save(string fileName)
+        {
+            mImage7Seg.SaveImage(fileName);
+        }
+
+        /// <summary>
         /// 指定されたPictureBoxに画像を描画する
         /// </summary>
         /// <param name="pb">描画先のPictureBox</param>
@@ -62,11 +83,6 @@ namespace _7SegMatrixTool
                 img.Resize(pictureImage);
                 pb.ImageIpl = pictureImage;
             }
-        }
-
-        public void save(string fileName)
-        {
-            mImage7Seg.SaveImage(fileName);
         }
 
         /// <summary>
@@ -91,25 +107,28 @@ namespace _7SegMatrixTool
 
         /// <summary>
         /// 二値画像(8bit)を7セグ画像(8bit)に変換する
-        /// mImageGray --> mImageBin
+        /// mImageGray --> mImageBin, m7SegPattern
         /// </summary>
         /// <param name="threshold">閾値(0-100)</param>
         private void convertBinTo7Seg(int threshold)
         {
             mImage7Seg = mImageBin.Clone();
             mImage7Seg.Zero();
-            match7SegMatrix(mImageBin, mImage7Seg, threshold);
+            m7SegPattern = match7SegMatrix(mImageBin, mImage7Seg, threshold);
         }
 
         /// <summary>
         /// 7セグマトリクスへのマッチング
+        /// マッチング結果の画像と7セグパターンを作成する
         /// </summary>
         /// <param name="src">入力画像</param>
         /// <param name="dest">出力画像</param>
         /// <param name="threshold">閾値(0-100)</param>
-        private void match7SegMatrix(IplImage src, IplImage dest, int threshold)
+        /// <returns>7セグパターン配列</returns>
+        private byte[] match7SegMatrix(IplImage src, IplImage dest, int threshold)
         {
             _7SegImage _7Seg = new _7SegImage();
+            byte[] patterns = new byte[_7SEG_NUM_IN_MATRIX];
 
             // 以下のfor文を並列化
             // for (int y = 0; y < Y_7SEG_NUM; y++)
@@ -130,8 +149,12 @@ namespace _7SegMatrixTool
                         x * _7SEG_SIZE.Width + xGap,
                         y * _7SEG_SIZE.Height + yGap,
                         pattern);
+
+                    patterns[y * X_7SEG_NUM + x] = pattern;
                 }
             });
+
+            return patterns;
         }
     }
 }
