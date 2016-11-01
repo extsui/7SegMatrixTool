@@ -26,6 +26,35 @@ namespace _7SegMatrixTool
         }
 
         /// <summary>
+        /// 7セグパターンから7セグ画像作成
+        /// </summary>
+        /// <param name="_7SegPattern">7セグパターン</param>
+        public _7SegMatrix(byte[] _7SegPattern)
+        {
+            mImage7Seg = new IplImage(640, 480, BitDepth.U8, 1);
+            mImage7Seg.Zero();
+            _7SegImage _7Seg = new _7SegImage();
+
+            // 以下のfor文を並列化
+            // for (int y = 0; y < Y_7SEG_NUM; y++)
+            Parallel.For(0, Y_7SEG_NUM, y =>
+            {
+                int yGap = y * Y_7SEG_GAP;
+                for (int x = 0; x < X_7SEG_NUM; x++)
+                {
+                    int xGap = x * X_7SEG_GAP;
+                    CvSize _7SEG_SIZE = _7Seg.getSize();
+
+                    _7Seg.write(mImage7Seg,
+                        x * _7SEG_SIZE.Width + xGap,
+                        y * _7SEG_SIZE.Height + yGap,
+                        _7SegPattern[y * X_7SEG_NUM + x]);
+                }
+            });
+
+        }
+
+        /// <summary>
         /// 入力画像を描画する
         /// </summary>
         /// <param name="pb">描画先のPictureBox</param>

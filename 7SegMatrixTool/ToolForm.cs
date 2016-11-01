@@ -2,6 +2,10 @@
 using System.Windows.Forms;
 using System.Threading;
 
+using System.IO;
+using System.Threading.Tasks;
+using System.Media;
+
 namespace _7SegMatrixTool
 {
     public partial class ToolForm : Form
@@ -96,7 +100,7 @@ namespace _7SegMatrixTool
                 textBoxOutputFile.Text = saveFileDialogSelectOutput.FileName;
             }
         }
-
+        
         /// <summary>
         /// 連番画像の変換を開始する
         /// </summary>
@@ -104,6 +108,34 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void buttonStartConvert_Click(object sender, EventArgs e)
         {
+            Task.Run(() =>
+            {
+                FileStream fs = new FileStream(@"F:\Project\7SegMatrixMovieCutter\Scene\BADAPPLE.7SM", FileMode.Open);
+                BinaryReader br = new BinaryReader(fs);
+                
+                // 音声ファイル
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"F:\Project\7SegMatrixMovieCutter\Movie\original\badapple.wav");
+                player.Play();
+
+                while (fs.Position < fs.Length)
+                {
+                    byte[] _7SegPattern = br.ReadBytes(128);
+                    _7SegMatrix matrix = new _7SegMatrix(_7SegPattern);
+                    matrix.drawOutputPicture(pictureBoxIplOutput);
+
+                    //textBoxInputFolder.Text = (fs.Position / 128).ToString();
+                    System.Threading.Thread.Sleep(66);
+                }
+
+                // 音声ストップ
+                player.Stop();
+                player.Dispose();
+
+                br.Close();
+                fs.Close();
+            });
+
+            /*
             if ((textBoxInputFolder.Text.CompareTo("") != 0)  &&
                 (textBoxOutputFolder.Text.CompareTo("") != 0) &&
                 (textBoxOutputFile.Text.CompareTo("") != 0))
@@ -127,6 +159,8 @@ namespace _7SegMatrixTool
             {
                 MessageBox.Show("入力フォルダ/出力フォルダ/出力ファイルを全て選択してください");
             }
+             
+             */
         }
     }
 }
