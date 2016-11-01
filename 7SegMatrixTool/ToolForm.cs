@@ -97,7 +97,7 @@ namespace _7SegMatrixTool
         {
             if (saveFileDialogSelectOutput.ShowDialog() == DialogResult.OK)
             {
-                textBoxOutputFile.Text = saveFileDialogSelectOutput.FileName;
+                textBox7SegMatrixOutputFile.Text = saveFileDialogSelectOutput.FileName;
             }
         }
         
