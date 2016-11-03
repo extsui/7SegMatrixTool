@@ -1,6 +1,6 @@
 ﻿namespace _7SegMatrixTool
 {
-    partial class ConversionProgressForm
+    partial class ProgressForm
     {
         /// <summary>
         /// Required designer variable.
@@ -54,24 +54,25 @@
             // labelProgress
             // 
             this.labelProgress.AutoSize = true;
-            this.labelProgress.Location = new System.Drawing.Point(12, 52);
+            this.labelProgress.Location = new System.Drawing.Point(16, 53);
             this.labelProgress.Name = "labelProgress";
-            this.labelProgress.Size = new System.Drawing.Size(113, 12);
+            this.labelProgress.Size = new System.Drawing.Size(83, 12);
             this.labelProgress.TabIndex = 2;
-            this.labelProgress.Text = "変換枚数: 0000/0000";
+            this.labelProgress.Text = "100% (100/100)";
             // 
-            // ConversionProgressForm
+            // ProgressForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(241, 82);
+            this.ControlBox = false;
             this.Controls.Add(this.labelProgress);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.progressBar);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Name = "ConversionProgressForm";
-            this.Text = "変換中";
+            this.Name = "ProgressForm";
+            this.Text = "Title";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -108,11 +108,74 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void buttonStartConvert_Click(object sender, EventArgs e)
         {
+            if ((textBoxInputFolder.Text.CompareTo("") != 0)  &&
+                (textBoxOutputFolder.Text.CompareTo("") != 0) &&
+                (textBox7SegMatrixOutputFile.Text.CompareTo("") != 0))
+            {
+                string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
+                string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
+                int conversionNumber = (int)numericUpDownConvertNum.Value;
+
+                string help = "入力ファイル: " + inputFileNameHeader  + "0000.bmp" + "...\n" +
+                              "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
+                              "変換枚数: " + conversionNumber + "\n";
+                if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+                {
+                    ProgressForm f = new ProgressForm();
+
+                    f.Owner = this;
+                    f.Show();
+
+                    this.Enabled = false;
+
+                    f.Title = "連番画像変換中";
+                    f.ProgressCount = conversionNumber;
+
+                    for (int i = 0; i < conversionNumber; i++)
+                    {
+                        if (f.IsCanceled)
+                        {
+                            break;
+                        }
+
+                        string inputFileName = inputFileNameHeader + i.ToString("D4") + ".bmp";
+                        string outputFileName = outputFileNameHeader + i.ToString("D4") + ".bmp";
+                        _7SegMatrix matrix = new _7SegMatrix(inputFileName);
+                        matrix.convert(trackBarThreshold.Value);
+                        matrix.save(outputFileName);
+                        
+                        f.ProgressValue = i + 1;
+                        Application.DoEvents();
+                    }
+
+                    if (f.DialogResult == DialogResult.OK)
+                    {
+                        MessageBox.Show("完了しました");
+                    }
+                    else
+                    {
+                        MessageBox.Show("中断しました");
+                    }
+
+                    this.Activate();
+                    f.Close();
+
+                    this.Enabled = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("入力フォルダ/出力フォルダ/出力ファイルを全て選択してください");
+            }
+        }
+        
+        private void buttonPlay_Click(object sender, EventArgs e)
+        {
             Task.Run(() =>
             {
                 FileStream fs = new FileStream(@"F:\Project\7SegMatrixMovieCutter\Scene\BADAPPLE.7SM", FileMode.Open);
                 BinaryReader br = new BinaryReader(fs);
-                
+
                 // 音声ファイル
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"F:\Project\7SegMatrixMovieCutter\Movie\original\badapple.wav");
                 player.Play();
@@ -134,33 +197,6 @@ namespace _7SegMatrixTool
                 br.Close();
                 fs.Close();
             });
-
-            /*
-            if ((textBoxInputFolder.Text.CompareTo("") != 0)  &&
-                (textBoxOutputFolder.Text.CompareTo("") != 0) &&
-                (textBoxOutputFile.Text.CompareTo("") != 0))
-            {
-                string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
-                string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
-                int conversionNumber = (int)numericUpDownConvertNum.Value;
-
-                string help = "入力ファイル: " + inputFileNameHeader  + "0000.bmp" + "...\n" +
-                              "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
-                              "変換枚数: " + conversionNumber + "\n";
-                if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                {
-                    ConversionProgressForm f = new ConversionProgressForm();
-                    f.startConversion(inputFileNameHeader, outputFileNameHeader, conversionNumber);
-                    f.ShowDialog();
-                    f.Dispose();
-                }
-            }
-            else
-            {
-                MessageBox.Show("入力フォルダ/出力フォルダ/出力ファイルを全て選択してください");
-            }
-             
-             */
         }
     }
 }
