@@ -40,7 +40,7 @@ namespace _7SegMatrixTool
             this.pictureBoxIplScreen.Location = new System.Drawing.Point(0, 0);
             this.pictureBoxIplScreen.MinimumSize = new System.Drawing.Size(640, 480);
             this.pictureBoxIplScreen.Name = "pictureBoxIplScreen";
-            this.pictureBoxIplScreen.Size = new System.Drawing.Size(656, 518);
+            this.pictureBoxIplScreen.Size = new System.Drawing.Size(640, 480);
             this.pictureBoxIplScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBoxIplScreen.TabIndex = 0;
             this.pictureBoxIplScreen.TabStop = false;
