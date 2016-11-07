@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Media;
 using System.Timers;
+using System.Diagnostics;
 
 namespace _7SegMatrixTool
 {
@@ -16,49 +17,47 @@ namespace _7SegMatrixTool
             fs = new FileStream(@"F:\Project\7SegMatrixMovieCutter\Scene\BADAPPLE.7SM", FileMode.Open);
             br = new BinaryReader(fs);
             player = new System.Media.SoundPlayer(@"F:\Project\7SegMatrixMovieCutter\Movie\original\badapple.wav");
-
         }
 
         FileStream fs;
         BinaryReader br;
         SoundPlayer player;
-        System.Timers.Timer timer;
 
         private void PlayerForm_Load(object sender, System.EventArgs e)
         {
             int fps = 10;
-
-            timer = new System.Timers.Timer();
-            timer.Interval = 1000.0 / fps;
-            timer.Elapsed += timer_Elapsed;
-            timer.AutoReset = true;
-            timer.Start();
+            decimal drawInterval = 1000m / fps;
             
-            // 音声ファイル
-            player.Play();
-        }
-
-        void timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (fs.Position < fs.Length)
+            Task.Run(() =>
             {
-                byte[] _7SegPattern = br.ReadBytes(128);
-                _7SegMatrix matrix = new _7SegMatrix(_7SegPattern);
+                Stopwatch sw = new Stopwatch();
+                decimal nextDrawTime = 0;
 
-                // BUG:  ウィンドウサイズを変更すると頻繁にエラー画像になってしまう。
-                //       _7SegMatrixクラスでdelegateしてないのが原因な気がする。
-                // TODO: drowXXXPicture()にボックス渡すのは変な気がする。
-                //       ⇒7SegMatrixクラスで、入力画像取得と出力画像取得メソッド作るべきでは?
+                // 音声ファイル
+                player.Play();
 
-                // delegate
-                pictureBoxIplScreen.BeginInvoke(new System.Action<_7SegMatrix>(delegateDrow), matrix);
+                sw.Start();
 
-                // TODO: 一定周期毎に更新するのでタイマでやるべき
-                //System.Threading.Thread.Sleep();
-            }
-            else
-            {
-                timer.Stop();
+                while (fs.Position < fs.Length)
+                {
+                    byte[] _7SegPattern = br.ReadBytes(128);
+                    _7SegMatrix matrix = new _7SegMatrix(_7SegPattern);
+
+                    while (true)
+                    {
+                        if (nextDrawTime <= sw.ElapsedMilliseconds)
+                        {
+                            pictureBoxIplScreen.BeginInvoke(new System.Action<_7SegMatrix>(delegateDraw), matrix);
+                            nextDrawTime += drawInterval;
+                            break;
+                        }
+                        else
+                        {
+                            // 負荷は上がるが描画タイミング精度を向上させるため最小周期でポーリングする。
+                            System.Threading.Thread.Sleep(1);
+                        }
+                    }
+                }
 
                 // 音声ストップ
                 player.Stop();
@@ -66,12 +65,12 @@ namespace _7SegMatrixTool
 
                 br.Close();
                 fs.Close();
-            }
+            });
         }
 
         private System.DateTime prevTime = System.DateTime.Now;
 
-        private void delegateDrow(_7SegMatrix matrix)
+        private void delegateDraw(_7SegMatrix matrix)
         {
             System.DateTime nowTime = System.DateTime.Now;
 
