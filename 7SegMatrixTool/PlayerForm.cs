@@ -1,32 +1,56 @@
 ﻿using System.Windows.Forms;
-using OpenCvSharp;
 using System.Threading.Tasks;
 using System.IO;
 using System.Media;
-using System.Timers;
 using System.Diagnostics;
 
 namespace _7SegMatrixTool
 {
     public partial class PlayerForm : Form
     {
-        public PlayerForm()
-        {
-            InitializeComponent();
+        private FileStream mFs = null;      // 7セグマトリクス専用形式ファイルストリーム
+        private int mFps = 0;               // 1秒間のフレーム数
+        private SoundPlayer mPlayer = null; // 音声再生
 
-            fs = new FileStream(@"F:\Project\7SegMatrixMovieCutter\Scene\BADAPPLE.7SM", FileMode.Open);
-            br = new BinaryReader(fs);
-            player = new System.Media.SoundPlayer(@"F:\Project\7SegMatrixMovieCutter\Movie\original\badapple.wav");
+        /// <summary>
+        /// 音声無し再生フォーム
+        /// </summary>
+        /// <param name="_7SegMatrixFile">7セグマトリクス専用形式ファイル</param>
+        /// <param name="fps">1秒間のフレーム数</param>
+        public PlayerForm(string _7SegMatrixFile, int fps)
+        {
+            PlayerFormCommon(_7SegMatrixFile, fps);
         }
 
-        FileStream fs;
-        BinaryReader br;
-        SoundPlayer player;
+        /// <summary>
+        /// 音声有り再生フォーム
+        /// </summary>
+        /// <param name="_7SegMatrixFile">7セグマトリクス専用形式ファイル</param>
+        /// <param name="fps">1秒間のフレーム数</param>
+        /// <param name="waveFile">音声形式ファイル</param>
+        public PlayerForm(string _7SegMatrixFile, int fps, string waveFile)
+        {
+            PlayerFormCommon(_7SegMatrixFile, fps);
+            mPlayer = new SoundPlayer(waveFile);
+        }
 
+        private PlayerForm PlayerFormCommon(string _7SegMatrixFile, int fps)
+        {
+            InitializeComponent();
+            mFs = new FileStream(_7SegMatrixFile, FileMode.Open);
+            mFps = fps;
+            return this;
+        }
+
+        /// <summary>
+        /// 再生フォーム読み込み時に呼び出され、ここで再生を開始する。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayerForm_Load(object sender, System.EventArgs e)
         {
-            int fps = 10;
-            decimal drawInterval = 1000m / fps;
+            decimal drawInterval = 1000m / mFps;
+            BinaryReader br = new BinaryReader(mFs);
             
             Task.Run(() =>
             {
@@ -34,11 +58,14 @@ namespace _7SegMatrixTool
                 decimal nextDrawTime = 0;
 
                 // 音声ファイル
-                player.Play();
+                if (mPlayer != null)
+                {
+                    mPlayer.Play();
+                }
 
                 sw.Start();
 
-                while (fs.Position < fs.Length)
+                while (mFs.Position < mFs.Length)
                 {
                     byte[] _7SegPattern = br.ReadBytes(128);
                     _7SegMatrix matrix = new _7SegMatrix(_7SegPattern);
@@ -60,16 +87,23 @@ namespace _7SegMatrixTool
                 }
 
                 // 音声ストップ
-                player.Stop();
-                player.Dispose();
+                if (mPlayer != null)
+                {
+                    mPlayer.Stop();
+                    mPlayer.Dispose();
+                }
 
                 br.Close();
-                fs.Close();
+                mFs.Close();
             });
         }
 
         private System.DateTime prevTime = System.DateTime.Now;
 
+        /// <summary>
+        /// 委譲描画用
+        /// </summary>
+        /// <param name="matrix"></param>
         private void delegateDraw(_7SegMatrix matrix)
         {
             System.DateTime nowTime = System.DateTime.Now;

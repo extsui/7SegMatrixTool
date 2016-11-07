@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Threading;
-
-using System.IO;
-using System.Threading.Tasks;
-using System.Media;
 
 namespace _7SegMatrixTool
 {
@@ -17,6 +12,10 @@ namespace _7SegMatrixTool
             InitializeComponent();
         }
 
+        /********************************************************************************
+         *  パラメータ調整
+         ********************************************************************************/
+
         /// <summary>
         /// パラメータ調整用のビットマップ画像を開く
         /// </summary>
@@ -24,9 +23,9 @@ namespace _7SegMatrixTool
         /// <param name="e"></param>
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (openFileDialogBmp.ShowDialog() == DialogResult.OK)
             {
-                m7SegMatrix = new _7SegMatrix(openFileDialog.FileName);
+                m7SegMatrix = new _7SegMatrix(openFileDialogBmp.FileName);
                 m7SegMatrix.drawInputPicture(pictureBoxIplInput);
                 m7SegMatrix.convert(trackBarThreshold.Value);
                 m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
@@ -62,6 +61,10 @@ namespace _7SegMatrixTool
             }
         }
 
+        /********************************************************************************
+         *  連番画像変換
+         ********************************************************************************/
+
         /// <summary>
         /// 連番画像の置いてある入力フォルダを選択する
         /// </summary>
@@ -76,6 +79,16 @@ namespace _7SegMatrixTool
         }
 
         /// <summary>
+        /// 出力フォルダを指定するか否か
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBoxOutputFolder_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxOutputFolder.Enabled = buttonSelectOutputFolder.Enabled = textBoxOutputPrefix.Enabled = checkBoxOutputFolder.Checked;
+        }
+        
+        /// <summary>
         /// 連番画像変換後の出力フォルダを選択する
         /// </summary>
         /// <param name="sender"></param>
@@ -89,6 +102,16 @@ namespace _7SegMatrixTool
         }
 
         /// <summary>
+        /// 出力ファイルを指定するか否か
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox7SegMatrixOutputFile_CheckedChanged(object sender, EventArgs e)
+        {
+            textBox7SegMatrixOutputFile.Enabled = buttonSelect7SegMatrixOutputFile.Enabled = checkBox7SegMatrixOutputFile.Checked;
+        }
+        
+        /// <summary>
         /// 連番画像変換後の出力ファイル(専用フォーマット)を選択する
         /// </summary>
         /// <param name="sender"></param>
@@ -100,23 +123,32 @@ namespace _7SegMatrixTool
                 textBox7SegMatrixOutputFile.Text = saveFileDialogSelectOutput.FileName;
             }
         }
-        
+ 
         /// <summary>
         /// 連番画像の変換を開始する
+        /// 
+        /// 以下のいずれかの場合、エラーとなる
+        /// ・入力フォルダが指定されていない
+        /// ・出力フォルダと出力ファイルのどちらもチェックされていない
+        /// ・出力フォルダがチェックされているのに出力フォルダが指定されていない
+        /// ・出力ファイルがチェックされているのに出力ファイルが指定されていない
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonStartConvert_Click(object sender, EventArgs e)
         {
-            if ((textBoxInputFolder.Text.CompareTo("") != 0)  &&
-                (textBoxOutputFolder.Text.CompareTo("") != 0) &&
-                (textBox7SegMatrixOutputFile.Text.CompareTo("") != 0))
+            // TODO: 判定処理の追加
+            // ...
+
+            if ((textBoxInputFolder.Text != "") &&
+                (textBoxOutputFolder.Text != "") &&
+                (textBox7SegMatrixOutputFile.Text != ""))
             {
                 string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
                 string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
                 int conversionNumber = (int)numericUpDownConvertNum.Value;
 
-                string help = "入力ファイル: " + inputFileNameHeader  + "0000.bmp" + "...\n" +
+                string help = "入力ファイル: " + inputFileNameHeader + "0000.bmp" + "...\n" +
                               "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
                               "変換枚数: " + conversionNumber + "\n";
                 if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
@@ -143,7 +175,7 @@ namespace _7SegMatrixTool
                         _7SegMatrix matrix = new _7SegMatrix(inputFileName);
                         matrix.convert(trackBarThreshold.Value);
                         matrix.save(outputFileName);
-                        
+
                         f.ProgressValue = i + 1;
                         Application.DoEvents();
                     }
@@ -168,11 +200,82 @@ namespace _7SegMatrixTool
                 MessageBox.Show("入力フォルダ/出力フォルダ/出力ファイルを全て選択してください");
             }
         }
-        
+
+        /********************************************************************************
+         *  7セグメントマトリクス専用形式テスト再生
+         ********************************************************************************/
+
+        /// <summary>
+        /// 再生ファイルを選択する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSelect7smFile_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog7sm.ShowDialog() == DialogResult.OK)
+            {
+                textBox7smInputFile.Text = openFileDialog7sm.FileName;
+            }
+        }
+
+        /// <summary>
+        /// 音声ファイルを使用するか否か
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBoxWaveInputFile_CheckedChanged(object sender, EventArgs e)
+        {
+            textBoxWaveInputFile.Enabled = buttonSelectWaveFile.Enabled = checkBoxWaveInputFile.Checked;
+        }
+
+        /// <summary>
+        /// 音声ファイルを選択する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonSelectWaveFile_Click(object sender, EventArgs e)
+        {
+            if (openFileDialogWave.ShowDialog() == DialogResult.OK)
+            {
+                textBoxWaveInputFile.Text = openFileDialogWave.FileName;
+            }
+        }
+
+        /// <summary>
+        /// 再生を開始する
+        /// 
+        /// 以下のいずれかの場合、エラーとなる
+        /// ・入力ファイルが指定されていない
+        /// ・音声ファイルがチェックされているのに音声ファイルが指定されていない
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            PlayerForm f = new PlayerForm();
-            f.ShowDialog();
+            PlayerForm pf = null;
+            int fps = (int)numericUpDownFPS.Value;
+
+            if (textBox7smInputFile.Text == "")
+            {
+                MessageBox.Show("入力ファイルを指定してください");
+                return;
+            }
+
+            if (checkBoxWaveInputFile.Checked)
+            {
+                if (textBoxWaveInputFile.Text == "")
+                {
+                    MessageBox.Show("音声ファイルを指定してください");
+                    return;
+                }
+                pf = new PlayerForm(textBox7smInputFile.Text, fps, textBoxWaveInputFile.Text);
+            }
+            else
+            {
+                pf = new PlayerForm(textBox7smInputFile.Text, fps);
+            }
+
+            pf.ShowDialog();
         }
     }
 }
