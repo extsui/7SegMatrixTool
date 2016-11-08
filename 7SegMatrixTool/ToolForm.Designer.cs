@@ -30,6 +30,7 @@ namespace _7SegMatrixTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolForm));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox7SegMatrixOutputFile = new System.Windows.Forms.CheckBox();
             this.checkBoxOutputFolder = new System.Windows.Forms.CheckBox();
@@ -591,6 +592,7 @@ namespace _7SegMatrixTool
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ToolForm";
             this.Text = "7SegMatrixTool";
