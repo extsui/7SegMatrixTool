@@ -30,6 +30,7 @@ namespace _7SegMatrixTool
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
             this.pictureBoxIplScreen = new OpenCvSharp.UserInterface.PictureBoxIpl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplScreen)).BeginInit();
             this.SuspendLayout();
@@ -51,10 +52,12 @@ namespace _7SegMatrixTool
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 480);
             this.Controls.Add(this.pictureBoxIplScreen);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(656, 518);
             this.Name = "PlayerForm";
-            this.Text = "PlayerForm";
+            this.Text = "テスト再生";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerForm_FormClosing);
             this.Load += new System.EventHandler(this.PlayerForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplScreen)).EndInit();
             this.ResumeLayout(false);

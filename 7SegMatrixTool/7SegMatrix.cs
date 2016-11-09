@@ -9,7 +9,7 @@ namespace _7SegMatrixTool
         private const int Y_7SEG_NUM = 8;   // 7セグマトリクスのY方向の個数
         private const int X_7SEG_GAP = 1;   // 7セグ間のX方向の間隔((39 + <1>) * 16 --> 640)
         private const int Y_7SEG_GAP = 8;   // 7セグ間のY方向の間隔((52 + <8>) * 8  --> 480)
-        private const int _7SEG_NUM_IN_MATRIX = X_7SEG_NUM * Y_7SEG_NUM;    // 7セグマトリクスの7セグの個数
+        public const int _7SEG_NUM_IN_MATRIX = X_7SEG_NUM * Y_7SEG_NUM;    // 7セグマトリクスの7セグの個数
 
         IplImage mImageFull = null; // 入力画像(フルカラー)
         IplImage mImageGray = null; // 入力画像(グレースケール)

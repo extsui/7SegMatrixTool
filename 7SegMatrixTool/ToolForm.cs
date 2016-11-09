@@ -276,6 +276,7 @@ namespace _7SegMatrixTool
             }
 
             pf.ShowDialog();
+            pf.Dispose();
         }
     }
 }
