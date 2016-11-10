@@ -126,6 +126,70 @@ namespace _7SegMatrixTool
  
         /// <summary>
         /// 連番画像の変換を開始する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonStartConvert_Click(object sender, EventArgs e)
+        {
+            if (!checkValidInputForConvert())
+            {
+                return;
+            }
+
+            string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
+            string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
+            int conversionNumber = (int)numericUpDownConvertNum.Value;
+
+            string help = "入力ファイル: " + inputFileNameHeader + "0000.bmp" + "...\n" +
+                          "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
+                          "変換枚数: " + conversionNumber + "\n";
+            if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+            {
+                ProgressForm f = new ProgressForm();
+
+                f.Owner = this;
+                f.Show();
+
+                this.Enabled = false;
+
+                f.Title = "連番画像変換中";
+                f.ProgressCount = conversionNumber;
+
+                for (int i = 0; i < conversionNumber; i++)
+                {
+                    if (f.IsCanceled)
+                    {
+                        break;
+                    }
+
+                    string inputFileName = inputFileNameHeader + i.ToString("D4") + ".bmp";
+                    string outputFileName = outputFileNameHeader + i.ToString("D4") + ".bmp";
+                    _7SegMatrix matrix = new _7SegMatrix(inputFileName);
+                    matrix.convert(trackBarThreshold.Value);
+                    matrix.save(outputFileName);
+
+                    f.ProgressValue = i + 1;
+                    Application.DoEvents();
+                }
+
+                if (f.DialogResult == DialogResult.OK)
+                {
+                    MessageBox.Show("完了しました");
+                }
+                else
+                {
+                    MessageBox.Show("中断しました");
+                }
+
+                this.Activate();
+                f.Close();
+
+                this.Enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// 連番画像変換用の入力チェック
         /// 
         /// 以下のいずれかの場合、エラーとなる
         /// ・入力フォルダが指定されていない
@@ -133,72 +197,33 @@ namespace _7SegMatrixTool
         /// ・出力フォルダがチェックされているのに出力フォルダが指定されていない
         /// ・出力ファイルがチェックされているのに出力ファイルが指定されていない
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void buttonStartConvert_Click(object sender, EventArgs e)
+        /// <returns>OK:true/NG:false</returns>
+        private bool checkValidInputForConvert()
         {
-            // TODO: 判定処理の追加
-            // ...
-
-            if ((textBoxInputFolder.Text != "") &&
-                (textBoxOutputFolder.Text != "") &&
-                (textBox7SegMatrixOutputFile.Text != ""))
+            if (textBoxInputFolder.Text == "")
             {
-                string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
-                string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
-                int conversionNumber = (int)numericUpDownConvertNum.Value;
-
-                string help = "入力ファイル: " + inputFileNameHeader + "0000.bmp" + "...\n" +
-                              "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
-                              "変換枚数: " + conversionNumber + "\n";
-                if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
-                {
-                    ProgressForm f = new ProgressForm();
-
-                    f.Owner = this;
-                    f.Show();
-
-                    this.Enabled = false;
-
-                    f.Title = "連番画像変換中";
-                    f.ProgressCount = conversionNumber;
-
-                    for (int i = 0; i < conversionNumber; i++)
-                    {
-                        if (f.IsCanceled)
-                        {
-                            break;
-                        }
-
-                        string inputFileName = inputFileNameHeader + i.ToString("D4") + ".bmp";
-                        string outputFileName = outputFileNameHeader + i.ToString("D4") + ".bmp";
-                        _7SegMatrix matrix = new _7SegMatrix(inputFileName);
-                        matrix.convert(trackBarThreshold.Value);
-                        matrix.save(outputFileName);
-
-                        f.ProgressValue = i + 1;
-                        Application.DoEvents();
-                    }
-
-                    if (f.DialogResult == DialogResult.OK)
-                    {
-                        MessageBox.Show("完了しました");
-                    }
-                    else
-                    {
-                        MessageBox.Show("中断しました");
-                    }
-
-                    this.Activate();
-                    f.Close();
-
-                    this.Enabled = true;
-                }
+                MessageBox.Show("入力フォルダを指定してください");
+                return false;
             }
-            else
+            if ((checkBoxOutputFolder.Checked == false) &&
+                (!checkBox7SegMatrixOutputFile.Checked))
             {
-                MessageBox.Show("入力フォルダ/出力フォルダ/出力ファイルを全て選択してください");
+                MessageBox.Show("出力フォルダ/出力ファイルのいずれかを指定してください");
+                return false;
             }
+            if ((checkBoxOutputFolder.Checked) &&
+                (textBoxOutputFolder.Text == ""))
+            {
+                MessageBox.Show("出力フォルダを指定してください");
+                return false;
+            }
+            if ((checkBox7SegMatrixOutputFile.Checked) &&
+                (textBox7SegMatrixOutputFile.Text == ""))
+            {
+                MessageBox.Show("出力ファイルを指定してください");
+                return false;
+            }
+            return true;
         }
 
         /********************************************************************************
@@ -243,31 +268,21 @@ namespace _7SegMatrixTool
 
         /// <summary>
         /// 再生を開始する
-        /// 
-        /// 以下のいずれかの場合、エラーとなる
-        /// ・入力ファイルが指定されていない
-        /// ・音声ファイルがチェックされているのに音声ファイルが指定されていない
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void buttonPlay_Click(object sender, EventArgs e)
         {
-            PlayerForm pf = null;
-            int fps = (int)numericUpDownFPS.Value;
-
-            if (textBox7smInputFile.Text == "")
+            if (!checkValidInputForPlay())
             {
-                MessageBox.Show("入力ファイルを指定してください");
                 return;
             }
 
+            PlayerForm pf = null;
+            int fps = (int)numericUpDownFPS.Value;
+
             if (checkBoxWaveInputFile.Checked)
             {
-                if (textBoxWaveInputFile.Text == "")
-                {
-                    MessageBox.Show("音声ファイルを指定してください");
-                    return;
-                }
                 pf = new PlayerForm(textBox7smInputFile.Text, fps, textBoxWaveInputFile.Text);
             }
             else
@@ -277,6 +292,30 @@ namespace _7SegMatrixTool
 
             pf.ShowDialog();
             pf.Dispose();
+        }
+
+        /// <summary>
+        /// 再生用の入力チェック
+        /// 
+        /// 以下のいずれかの場合、エラーとなる
+        /// ・入力ファイルが指定されていない
+        /// ・音声ファイルがチェックされているのに音声ファイルが指定されていない
+        /// </summary>
+        /// <returns>OK:true/NG:false</returns>
+        private bool checkValidInputForPlay()
+        {
+            if (textBox7smInputFile.Text == "")
+            {
+                MessageBox.Show("入力ファイルを指定してください");
+                return false;
+            }
+            if ((checkBoxWaveInputFile.Checked) &&
+                (textBoxWaveInputFile.Text == ""))
+            {
+                MessageBox.Show("音声ファイルを指定してください");
+                return false;
+            }
+            return true;
         }
     }
 }

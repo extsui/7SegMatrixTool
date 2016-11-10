@@ -443,7 +443,6 @@ namespace _7SegMatrixTool
             // openFileDialogBmp
             // 
             this.openFileDialogBmp.Filter = "ビットマップファイル|*.bmp";
-            this.openFileDialogBmp.InitialDirectory = "C:\\";
             // 
             // saveFileDialog
             // 
