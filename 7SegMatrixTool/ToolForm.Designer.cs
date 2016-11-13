@@ -344,17 +344,20 @@ namespace _7SegMatrixTool
             // radioButtonColor
             // 
             this.radioButtonColor.AutoSize = true;
+            this.radioButtonColor.Enabled = false;
             this.radioButtonColor.Location = new System.Drawing.Point(447, 280);
             this.radioButtonColor.Name = "radioButtonColor";
             this.radioButtonColor.Size = new System.Drawing.Size(50, 16);
             this.radioButtonColor.TabIndex = 3;
             this.radioButtonColor.Text = "カラー";
             this.radioButtonColor.UseVisualStyleBackColor = true;
+            this.radioButtonColor.Click += new System.EventHandler(this.radioButtonColor_Click);
             // 
             // radioButtonWhiteBlack
             // 
             this.radioButtonWhiteBlack.AutoSize = true;
             this.radioButtonWhiteBlack.Checked = true;
+            this.radioButtonWhiteBlack.Enabled = false;
             this.radioButtonWhiteBlack.Location = new System.Drawing.Point(394, 280);
             this.radioButtonWhiteBlack.Name = "radioButtonWhiteBlack";
             this.radioButtonWhiteBlack.Size = new System.Drawing.Size(47, 16);
@@ -362,6 +365,7 @@ namespace _7SegMatrixTool
             this.radioButtonWhiteBlack.TabStop = true;
             this.radioButtonWhiteBlack.Text = "白黒";
             this.radioButtonWhiteBlack.UseVisualStyleBackColor = true;
+            this.radioButtonWhiteBlack.Click += new System.EventHandler(this.radioButtonWhiteBlack_Click);
             // 
             // labelThreshold
             // 
@@ -443,6 +447,7 @@ namespace _7SegMatrixTool
             // openFileDialogBmp
             // 
             this.openFileDialogBmp.Filter = "ビットマップファイル|*.bmp";
+            this.openFileDialogBmp.InitialDirectory = "C:\\";
             // 
             // saveFileDialog
             // 

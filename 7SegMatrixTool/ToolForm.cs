@@ -33,6 +33,8 @@ namespace _7SegMatrixTool
                 // 読み込み後に使用できるコンポーネントを有効化
                 trackBarThreshold.Enabled = true;
                 buttonSaveFile.Enabled = true;
+                radioButtonWhiteBlack.Enabled = true;
+                radioButtonColor.Enabled = true;
             }
         }
 
@@ -46,6 +48,31 @@ namespace _7SegMatrixTool
             labelThreshold.Text = trackBarThreshold.Value.ToString("D");
             m7SegMatrix.convert(trackBarThreshold.Value);
             m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
+        }
+
+        /// <summary>
+        /// 押下時に白黒変換を行う(デフォルトで指定)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radioButtonWhiteBlack_Click(object sender, EventArgs e)
+        {
+            trackBarThreshold.Enabled = true;
+            m7SegMatrix.convert(trackBarThreshold.Value);
+            m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
+        }
+
+        /// <summary>
+        /// 押下時にカラー変換を行う
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void radioButtonColor_Click(object sender, EventArgs e)
+        {
+            // TBD: 閾値はカラー変換時に使用しない予定
+            trackBarThreshold.Enabled = false;
+
+            MessageBox.Show("Not Implemented.");
         }
 
         /// <summary>
