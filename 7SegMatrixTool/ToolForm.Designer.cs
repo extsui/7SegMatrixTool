@@ -32,17 +32,17 @@ namespace _7SegMatrixTool
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ToolForm));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox7SegMatrixOutputFile = new System.Windows.Forms.CheckBox();
+            this.checkBox7smOutputFile = new System.Windows.Forms.CheckBox();
             this.checkBoxOutputFolder = new System.Windows.Forms.CheckBox();
             this.checkBoxInputFolder = new System.Windows.Forms.CheckBox();
             this.label12 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.buttonConvert = new System.Windows.Forms.Button();
-            this.buttonSelect7SegMatrixOutputFile = new System.Windows.Forms.Button();
-            this.numericUpDownConvertNum = new System.Windows.Forms.NumericUpDown();
+            this.buttonSelect7smOutputFile = new System.Windows.Forms.Button();
+            this.numericUpDownConvertCount = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.buttonSelectOutputFolder = new System.Windows.Forms.Button();
-            this.textBox7SegMatrixOutputFile = new System.Windows.Forms.TextBox();
+            this.textBox7smOutputFile = new System.Windows.Forms.TextBox();
             this.buttonSelectInputFolder = new System.Windows.Forms.Button();
             this.textBoxInputFolder = new System.Windows.Forms.TextBox();
             this.textBoxOutputFolder = new System.Windows.Forms.TextBox();
@@ -75,12 +75,12 @@ namespace _7SegMatrixTool
             this.buttonSelectWaveFile = new System.Windows.Forms.Button();
             this.textBoxWaveInputFile = new System.Windows.Forms.TextBox();
             this.checkBox7smInputFile = new System.Windows.Forms.CheckBox();
-            this.buttonSelect7smFile = new System.Windows.Forms.Button();
+            this.buttonSelect7smInputFile = new System.Windows.Forms.Button();
             this.textBox7smInputFile = new System.Windows.Forms.TextBox();
             this.openFileDialog7sm = new System.Windows.Forms.OpenFileDialog();
             this.openFileDialogWave = new System.Windows.Forms.OpenFileDialog();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertCount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxIplOutput)).BeginInit();
@@ -91,17 +91,17 @@ namespace _7SegMatrixTool
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox7SegMatrixOutputFile);
+            this.groupBox2.Controls.Add(this.checkBox7smOutputFile);
             this.groupBox2.Controls.Add(this.checkBoxOutputFolder);
             this.groupBox2.Controls.Add(this.checkBoxInputFolder);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.label11);
             this.groupBox2.Controls.Add(this.buttonConvert);
-            this.groupBox2.Controls.Add(this.buttonSelect7SegMatrixOutputFile);
-            this.groupBox2.Controls.Add(this.numericUpDownConvertNum);
+            this.groupBox2.Controls.Add(this.buttonSelect7smOutputFile);
+            this.groupBox2.Controls.Add(this.numericUpDownConvertCount);
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.buttonSelectOutputFolder);
-            this.groupBox2.Controls.Add(this.textBox7SegMatrixOutputFile);
+            this.groupBox2.Controls.Add(this.textBox7smOutputFile);
             this.groupBox2.Controls.Add(this.buttonSelectInputFolder);
             this.groupBox2.Controls.Add(this.textBoxInputFolder);
             this.groupBox2.Controls.Add(this.textBoxOutputFolder);
@@ -116,16 +116,16 @@ namespace _7SegMatrixTool
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "連番画像変換 (*.bmp ⇒ *.bmp/*.7sm)";
             // 
-            // checkBox7SegMatrixOutputFile
+            // checkBox7smOutputFile
             // 
-            this.checkBox7SegMatrixOutputFile.AutoSize = true;
-            this.checkBox7SegMatrixOutputFile.Location = new System.Drawing.Point(15, 72);
-            this.checkBox7SegMatrixOutputFile.Name = "checkBox7SegMatrixOutputFile";
-            this.checkBox7SegMatrixOutputFile.Size = new System.Drawing.Size(82, 16);
-            this.checkBox7SegMatrixOutputFile.TabIndex = 8;
-            this.checkBox7SegMatrixOutputFile.Text = "出力ファイル";
-            this.checkBox7SegMatrixOutputFile.UseVisualStyleBackColor = true;
-            this.checkBox7SegMatrixOutputFile.CheckedChanged += new System.EventHandler(this.checkBox7SegMatrixOutputFile_CheckedChanged);
+            this.checkBox7smOutputFile.AutoSize = true;
+            this.checkBox7smOutputFile.Location = new System.Drawing.Point(15, 72);
+            this.checkBox7smOutputFile.Name = "checkBox7smOutputFile";
+            this.checkBox7smOutputFile.Size = new System.Drawing.Size(82, 16);
+            this.checkBox7smOutputFile.TabIndex = 8;
+            this.checkBox7smOutputFile.Text = "出力ファイル";
+            this.checkBox7smOutputFile.UseVisualStyleBackColor = true;
+            this.checkBox7smOutputFile.CheckedChanged += new System.EventHandler(this.checkBox7smOutputFile_CheckedChanged);
             // 
             // checkBoxOutputFolder
             // 
@@ -182,34 +182,34 @@ namespace _7SegMatrixTool
             this.buttonConvert.UseVisualStyleBackColor = true;
             this.buttonConvert.Click += new System.EventHandler(this.buttonStartConvert_Click);
             // 
-            // buttonSelect7SegMatrixOutputFile
+            // buttonSelect7smOutputFile
             // 
-            this.buttonSelect7SegMatrixOutputFile.Enabled = false;
-            this.buttonSelect7SegMatrixOutputFile.Location = new System.Drawing.Point(486, 68);
-            this.buttonSelect7SegMatrixOutputFile.Name = "buttonSelect7SegMatrixOutputFile";
-            this.buttonSelect7SegMatrixOutputFile.Size = new System.Drawing.Size(75, 23);
-            this.buttonSelect7SegMatrixOutputFile.TabIndex = 10;
-            this.buttonSelect7SegMatrixOutputFile.Text = "選択";
-            this.buttonSelect7SegMatrixOutputFile.UseVisualStyleBackColor = true;
-            this.buttonSelect7SegMatrixOutputFile.Click += new System.EventHandler(this.buttonSelectOutputFile_Click);
+            this.buttonSelect7smOutputFile.Enabled = false;
+            this.buttonSelect7smOutputFile.Location = new System.Drawing.Point(486, 68);
+            this.buttonSelect7smOutputFile.Name = "buttonSelect7smOutputFile";
+            this.buttonSelect7smOutputFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelect7smOutputFile.TabIndex = 10;
+            this.buttonSelect7smOutputFile.Text = "選択";
+            this.buttonSelect7smOutputFile.UseVisualStyleBackColor = true;
+            this.buttonSelect7smOutputFile.Click += new System.EventHandler(this.buttonSelectOutputFile_Click);
             // 
-            // numericUpDownConvertNum
+            // numericUpDownConvertCount
             // 
-            this.numericUpDownConvertNum.Location = new System.Drawing.Point(101, 96);
-            this.numericUpDownConvertNum.Maximum = new decimal(new int[] {
+            this.numericUpDownConvertCount.Location = new System.Drawing.Point(101, 96);
+            this.numericUpDownConvertCount.Maximum = new decimal(new int[] {
             10000,
             0,
             0,
             0});
-            this.numericUpDownConvertNum.Minimum = new decimal(new int[] {
+            this.numericUpDownConvertCount.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDownConvertNum.Name = "numericUpDownConvertNum";
-            this.numericUpDownConvertNum.Size = new System.Drawing.Size(74, 19);
-            this.numericUpDownConvertNum.TabIndex = 11;
-            this.numericUpDownConvertNum.Value = new decimal(new int[] {
+            this.numericUpDownConvertCount.Name = "numericUpDownConvertCount";
+            this.numericUpDownConvertCount.Size = new System.Drawing.Size(74, 19);
+            this.numericUpDownConvertCount.TabIndex = 11;
+            this.numericUpDownConvertCount.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -235,13 +235,13 @@ namespace _7SegMatrixTool
             this.buttonSelectOutputFolder.UseVisualStyleBackColor = true;
             this.buttonSelectOutputFolder.Click += new System.EventHandler(this.buttonSelectOutputFolder_Click);
             // 
-            // textBox7SegMatrixOutputFile
+            // textBox7smOutputFile
             // 
-            this.textBox7SegMatrixOutputFile.Enabled = false;
-            this.textBox7SegMatrixOutputFile.Location = new System.Drawing.Point(101, 70);
-            this.textBox7SegMatrixOutputFile.Name = "textBox7SegMatrixOutputFile";
-            this.textBox7SegMatrixOutputFile.Size = new System.Drawing.Size(379, 19);
-            this.textBox7SegMatrixOutputFile.TabIndex = 9;
+            this.textBox7smOutputFile.Enabled = false;
+            this.textBox7smOutputFile.Location = new System.Drawing.Point(101, 70);
+            this.textBox7smOutputFile.Name = "textBox7smOutputFile";
+            this.textBox7smOutputFile.Size = new System.Drawing.Size(379, 19);
+            this.textBox7smOutputFile.TabIndex = 9;
             // 
             // buttonSelectInputFolder
             // 
@@ -468,7 +468,7 @@ namespace _7SegMatrixTool
             this.groupBox3.Controls.Add(this.buttonSelectWaveFile);
             this.groupBox3.Controls.Add(this.textBoxWaveInputFile);
             this.groupBox3.Controls.Add(this.checkBox7smInputFile);
-            this.groupBox3.Controls.Add(this.buttonSelect7smFile);
+            this.groupBox3.Controls.Add(this.buttonSelect7smInputFile);
             this.groupBox3.Controls.Add(this.textBox7smInputFile);
             this.groupBox3.Location = new System.Drawing.Point(13, 454);
             this.groupBox3.Name = "groupBox3";
@@ -562,15 +562,15 @@ namespace _7SegMatrixTool
             this.checkBox7smInputFile.Text = "入力ファイル";
             this.checkBox7smInputFile.UseVisualStyleBackColor = true;
             // 
-            // buttonSelect7smFile
+            // buttonSelect7smInputFile
             // 
-            this.buttonSelect7smFile.Location = new System.Drawing.Point(486, 16);
-            this.buttonSelect7smFile.Name = "buttonSelect7smFile";
-            this.buttonSelect7smFile.Size = new System.Drawing.Size(75, 23);
-            this.buttonSelect7smFile.TabIndex = 2;
-            this.buttonSelect7smFile.Text = "選択";
-            this.buttonSelect7smFile.UseVisualStyleBackColor = true;
-            this.buttonSelect7smFile.Click += new System.EventHandler(this.buttonSelect7smFile_Click);
+            this.buttonSelect7smInputFile.Location = new System.Drawing.Point(486, 16);
+            this.buttonSelect7smInputFile.Name = "buttonSelect7smInputFile";
+            this.buttonSelect7smInputFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonSelect7smInputFile.TabIndex = 2;
+            this.buttonSelect7smInputFile.Text = "選択";
+            this.buttonSelect7smInputFile.UseVisualStyleBackColor = true;
+            this.buttonSelect7smInputFile.Click += new System.EventHandler(this.buttonSelect7smFile_Click);
             // 
             // textBox7smInputFile
             // 
@@ -602,7 +602,7 @@ namespace _7SegMatrixTool
             this.Text = "7SegMatrixTool";
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertCount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarThreshold)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -628,16 +628,16 @@ namespace _7SegMatrixTool
         private System.Windows.Forms.TextBox textBoxInputPrefix;
         private System.Windows.Forms.TextBox textBoxInputFolder;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.NumericUpDown numericUpDownConvertNum;
+        private System.Windows.Forms.NumericUpDown numericUpDownConvertCount;
         private System.Windows.Forms.Button buttonConvert;
         private System.Windows.Forms.TextBox textBoxOutputFolder;
-        private System.Windows.Forms.TextBox textBox7SegMatrixOutputFile;
+        private System.Windows.Forms.TextBox textBox7smOutputFile;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonSelectInputFolder;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonSelectOutputFolder;
-        private System.Windows.Forms.Button buttonSelect7SegMatrixOutputFile;
+        private System.Windows.Forms.Button buttonSelect7smOutputFile;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.OpenFileDialog openFileDialogBmp;
@@ -648,14 +648,14 @@ namespace _7SegMatrixTool
         private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplOutput;
         private OpenCvSharp.UserInterface.PictureBoxIpl pictureBoxIplInput;
         private System.Windows.Forms.Label labelThreshold;
-        private System.Windows.Forms.CheckBox checkBox7SegMatrixOutputFile;
+        private System.Windows.Forms.CheckBox checkBox7smOutputFile;
         private System.Windows.Forms.CheckBox checkBoxOutputFolder;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonPlay;
         private System.Windows.Forms.CheckBox checkBoxWaveInputFile;
         private System.Windows.Forms.Button buttonSelectWaveFile;
         private System.Windows.Forms.TextBox textBoxWaveInputFile;
-        private System.Windows.Forms.Button buttonSelect7smFile;
+        private System.Windows.Forms.Button buttonSelect7smInputFile;
         private System.Windows.Forms.TextBox textBox7smInputFile;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown numericUpDownFPS;

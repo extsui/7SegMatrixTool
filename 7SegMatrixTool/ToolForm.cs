@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace _7SegMatrixTool
@@ -133,9 +134,9 @@ namespace _7SegMatrixTool
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void checkBox7SegMatrixOutputFile_CheckedChanged(object sender, EventArgs e)
+        private void checkBox7smOutputFile_CheckedChanged(object sender, EventArgs e)
         {
-            textBox7SegMatrixOutputFile.Enabled = buttonSelect7SegMatrixOutputFile.Enabled = checkBox7SegMatrixOutputFile.Checked;
+            textBox7smOutputFile.Enabled = buttonSelect7smOutputFile.Enabled = checkBox7smOutputFile.Checked;
         }
         
         /// <summary>
@@ -147,7 +148,7 @@ namespace _7SegMatrixTool
         {
             if (saveFileDialogSelectOutput.ShowDialog() == DialogResult.OK)
             {
-                textBox7SegMatrixOutputFile.Text = saveFileDialogSelectOutput.FileName;
+                textBox7smOutputFile.Text = saveFileDialogSelectOutput.FileName;
             }
         }
  
@@ -165,12 +166,11 @@ namespace _7SegMatrixTool
 
             string inputFileNameHeader = textBoxInputFolder.Text + "\\" + textBoxInputPrefix.Text;
             string outputFileNameHeader = textBoxOutputFolder.Text + "\\" + textBoxOutputPrefix.Text;
-            int conversionNumber = (int)numericUpDownConvertNum.Value;
+            string output7smFileName = textBox7smOutputFile.Text;
+            int convertCount = (int)numericUpDownConvertCount.Value;
 
-            string help = "入力ファイル: " + inputFileNameHeader + "0000.bmp" + "...\n" +
-                          "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n" +
-                          "変換枚数: " + conversionNumber + "\n";
-            if (MessageBox.Show(help, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
+            string confirmMessage = createConfirmMessage(inputFileNameHeader, outputFileNameHeader, output7smFileName, convertCount);
+            if (MessageBox.Show(confirmMessage, "確認", MessageBoxButtons.YesNoCancel) == DialogResult.Yes)
             {
                 ProgressForm f = new ProgressForm();
 
@@ -180,9 +180,18 @@ namespace _7SegMatrixTool
                 this.Enabled = false;
 
                 f.Title = "連番画像変換中";
-                f.ProgressCount = conversionNumber;
+                f.ProgressCount = convertCount;
 
-                for (int i = 0; i < conversionNumber; i++)
+                FileStream fs = null;
+                BinaryWriter bw = null;
+                
+                if (checkBox7smOutputFile.Checked)
+                {
+                    fs = new FileStream(output7smFileName, FileMode.Create);
+                    bw = new BinaryWriter(fs);
+                }
+
+                for (int i = 0; i < convertCount; i++)
                 {
                     if (f.IsCanceled)
                     {
@@ -193,10 +202,26 @@ namespace _7SegMatrixTool
                     string outputFileName = outputFileNameHeader + i.ToString("D4") + ".bmp";
                     _7SegMatrix matrix = new _7SegMatrix(inputFileName);
                     matrix.convert(trackBarThreshold.Value);
-                    matrix.save(outputFileName);
 
+                    if (checkBoxOutputFolder.Checked)
+                    {
+                        matrix.save(outputFileName);
+                    }
+
+                    if (checkBox7smOutputFile.Checked)
+                    {
+                        byte[] _7SegPattern = matrix.get7SegPattern();
+                        bw.Write(_7SegPattern);
+                    }
+                    
                     f.ProgressValue = i + 1;
                     Application.DoEvents();
+                }
+
+                if (checkBox7smOutputFile.Checked)
+                {
+                    bw.Close();
+                    fs.Close();
                 }
 
                 if (f.DialogResult == DialogResult.OK)
@@ -213,6 +238,29 @@ namespace _7SegMatrixTool
 
                 this.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// 連番画像変換時の確認メッセージの作成
+        /// </summary>
+        /// <param name="inputFileNameHeader"></param>
+        /// <param name="outputFileNameHeader"></param>
+        /// <param name="output7smFileName"></param>
+        /// <param name="convertCount"></param>
+        /// <returns></returns>
+        private string createConfirmMessage(string inputFileNameHeader, string outputFileNameHeader, string output7smFileName, int convertCount)
+        {
+            string confirmMessage = "入力ファイル: " + inputFileNameHeader + "0000.bmp" + "...\n";
+            if (checkBoxOutputFolder.Checked)
+            {
+                confirmMessage += "出力ファイル: " + outputFileNameHeader + "0000.bmp" + "...\n";
+            }
+            if (checkBox7smOutputFile.Checked)
+            {
+                confirmMessage += "出力ファイル(7sm): " + output7smFileName + "\n";
+            }
+            confirmMessage += "変換枚数: " + convertCount + "\n";
+            return confirmMessage;
         }
 
         /// <summary>
@@ -233,7 +281,7 @@ namespace _7SegMatrixTool
                 return false;
             }
             if ((checkBoxOutputFolder.Checked == false) &&
-                (!checkBox7SegMatrixOutputFile.Checked))
+                (!checkBox7smOutputFile.Checked))
             {
                 MessageBox.Show("出力フォルダ/出力ファイルのいずれかを指定してください");
                 return false;
@@ -244,8 +292,8 @@ namespace _7SegMatrixTool
                 MessageBox.Show("出力フォルダを指定してください");
                 return false;
             }
-            if ((checkBox7SegMatrixOutputFile.Checked) &&
-                (textBox7SegMatrixOutputFile.Text == ""))
+            if ((checkBox7smOutputFile.Checked) &&
+                (textBox7smOutputFile.Text == ""))
             {
                 MessageBox.Show("出力ファイルを指定してください");
                 return false;
