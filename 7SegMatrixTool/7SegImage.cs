@@ -1,4 +1,5 @@
 ﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
 using System.Windows.Forms;
 
 namespace _7SegMatrixTool
@@ -10,18 +11,15 @@ namespace _7SegMatrixTool
 
         public _7SegImage()
         {
-            /*
-             * 0.bmp ... aセグメントに対応
-             * 1.bmp ... bセグメントに対応
-             * ...
-             * 7.bmp ... dotセグメントに対応
-             * (画像は全ては同一サイズ)
-             */
             segment = new IplImage[SEGMENT_NUM];
-            for (int i = 0; i < SEGMENT_NUM; i++)
-            {
-                segment[i] = new IplImage(@"../../../" + i + ".bmp");
-            }
+            segment[0] = BitmapConverter.ToIplImage(Properties.Resources.A_SEG);
+            segment[1] = BitmapConverter.ToIplImage(Properties.Resources.B_SEG);
+            segment[2] = BitmapConverter.ToIplImage(Properties.Resources.C_SEG);
+            segment[3] = BitmapConverter.ToIplImage(Properties.Resources.D_SEG);
+            segment[4] = BitmapConverter.ToIplImage(Properties.Resources.E_SEG);
+            segment[5] = BitmapConverter.ToIplImage(Properties.Resources.F_SEG);
+            segment[6] = BitmapConverter.ToIplImage(Properties.Resources.G_SEG);
+            segment[7] = BitmapConverter.ToIplImage(Properties.Resources.H_SEG);
         }
 
         /// <summary>
