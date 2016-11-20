@@ -305,7 +305,6 @@ namespace _7SegMatrixTool
             // 
             // trackBarThreshold
             // 
-            this.trackBarThreshold.Enabled = false;
             this.trackBarThreshold.LargeChange = 10;
             this.trackBarThreshold.Location = new System.Drawing.Point(340, 46);
             this.trackBarThreshold.Maximum = 100;
@@ -344,7 +343,6 @@ namespace _7SegMatrixTool
             // radioButtonColor
             // 
             this.radioButtonColor.AutoSize = true;
-            this.radioButtonColor.Enabled = false;
             this.radioButtonColor.Location = new System.Drawing.Point(447, 280);
             this.radioButtonColor.Name = "radioButtonColor";
             this.radioButtonColor.Size = new System.Drawing.Size(50, 16);
@@ -357,7 +355,6 @@ namespace _7SegMatrixTool
             // 
             this.radioButtonWhiteBlack.AutoSize = true;
             this.radioButtonWhiteBlack.Checked = true;
-            this.radioButtonWhiteBlack.Enabled = false;
             this.radioButtonWhiteBlack.Location = new System.Drawing.Point(394, 280);
             this.radioButtonWhiteBlack.Name = "radioButtonWhiteBlack";
             this.radioButtonWhiteBlack.Size = new System.Drawing.Size(47, 16);
@@ -425,7 +422,6 @@ namespace _7SegMatrixTool
             // 
             // buttonSaveFile
             // 
-            this.buttonSaveFile.Enabled = false;
             this.buttonSaveFile.Location = new System.Drawing.Point(636, 277);
             this.buttonSaveFile.Name = "buttonSaveFile";
             this.buttonSaveFile.Size = new System.Drawing.Size(75, 23);
@@ -599,6 +595,7 @@ namespace _7SegMatrixTool
             this.MaximizeBox = false;
             this.Name = "ToolForm";
             this.Text = "7SegMatrixTool";
+            this.Load += new System.EventHandler(this.ToolForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownConvertCount)).EndInit();

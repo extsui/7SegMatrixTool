@@ -61,6 +61,16 @@ namespace _7SegMatrixTool.Properties {
         }
         
         /// <summary>
+        ///   (アイコン) に類似した型 System.Drawing.Icon のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Icon _7SegMatrixTool {
+            get {
+                object obj = ResourceManager.GetObject("_7SegMatrixTool", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
         internal static System.Drawing.Bitmap A_SEG {
@@ -136,6 +146,16 @@ namespace _7SegMatrixTool.Properties {
         internal static System.Drawing.Bitmap H_SEG {
             get {
                 object obj = ResourceManager.GetObject("H_SEG", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap SAMPLE {
+            get {
+                object obj = ResourceManager.GetObject("SAMPLE", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System.Drawing;
 
 namespace _7SegMatrixTool
 {
@@ -18,9 +20,24 @@ namespace _7SegMatrixTool
 
         byte[] m7SegPattern = null;    // 7セグパターン配列
 
+        /// <summary>
+        /// ファイル名から作成
+        /// </summary>
+        /// <param name="fileName"></param>
         public _7SegMatrix(string fileName)
         {
             mImageFull = new IplImage(fileName);
+            convertFullToGray();
+            convertGrayToBin();
+        }
+
+        /// <summary>
+        /// ビットマップから作成
+        /// </summary>
+        /// <param name="bitmap"></param>
+        public _7SegMatrix(Bitmap bitmap)
+        {
+            mImageFull = BitmapConverter.ToIplImage(bitmap);
             convertFullToGray();
             convertGrayToBin();
         }
@@ -51,7 +68,6 @@ namespace _7SegMatrixTool
                         _7SegPattern[y * X_7SEG_NUM + x]);
                 }
             });
-
         }
 
         /// <summary>

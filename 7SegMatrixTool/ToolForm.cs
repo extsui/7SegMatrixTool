@@ -13,6 +13,17 @@ namespace _7SegMatrixTool
             InitializeComponent();
         }
 
+        /// <summary>
+        /// サンプル画像の変換を表示する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToolForm_Load(object sender, EventArgs e)
+        {
+            m7SegMatrix = new _7SegMatrix(Properties.Resources.SAMPLE);
+            drawConvertPicture(m7SegMatrix);
+        }
+
         /********************************************************************************
          *  パラメータ調整
          ********************************************************************************/
@@ -27,15 +38,7 @@ namespace _7SegMatrixTool
             if (openFileDialogBmp.ShowDialog() == DialogResult.OK)
             {
                 m7SegMatrix = new _7SegMatrix(openFileDialogBmp.FileName);
-                m7SegMatrix.drawInputPicture(pictureBoxIplInput);
-                m7SegMatrix.convert(trackBarThreshold.Value);
-                m7SegMatrix.drawOutputPicture(pictureBoxIplOutput);
-
-                // 読み込み後に使用できるコンポーネントを有効化
-                trackBarThreshold.Enabled = true;
-                buttonSaveFile.Enabled = true;
-                radioButtonWhiteBlack.Enabled = true;
-                radioButtonColor.Enabled = true;
+                drawConvertPicture(m7SegMatrix);
             }
         }
 
@@ -87,6 +90,17 @@ namespace _7SegMatrixTool
             {
                 m7SegMatrix.save(saveFileDialog.FileName);
             }
+        }
+
+        /// <summary>
+        /// 入力画像⇒出力画像変換を表示する
+        /// </summary>
+        /// <param name="matrix">7セグマトリクスのインスタンス</param>
+        private void drawConvertPicture(_7SegMatrix matrix)
+        {
+            matrix.drawInputPicture(pictureBoxIplInput);
+            matrix.convert(trackBarThreshold.Value);
+            matrix.drawOutputPicture(pictureBoxIplOutput);
         }
 
         /********************************************************************************
